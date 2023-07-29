@@ -44,20 +44,20 @@ jobs:
       
     - name: Check server configuration
       run: |
-        echo "警告⚠"
-        echo "若分配的服务器性能不足，务必及时取消，重新运行！"
-        echo "已知编译成功CPU型号：8370C,8171M"
-        echo "已知性能不足CPU型号：8272CL"
-        echo -e "-------------- ------------CPU信息------------------------------------------\n"
-        echo "CPU物理数量:$(cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l)"
-        echo -e "CPU核心及版本信息：$(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
-        echo "-------------------------------内存信息-------------------------------------------"
-        echo "已安装内存详细信息："
+        echo "Warning"
+        echo "If the performance of the allocated server is insufficient, be sure to cancel it in time and run it again!"
+        echo "CPU models known to be successfully compiled: 8370C, 8171M"
+        echo "CPU model known to be underperforming: 8272CL"
+        echo -e "------------- ------------CPU information ------------------ ------------------------\n"
+        echo "CPU physical quantity: $(cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l)"
+        echo -e "CPU core and version information: $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
+        echo "------------------------------- memory information --------------- ----------------------------"
+        echo "Installed memory details:"
         sudo lshw -short -C memory | grep GiB
         echo -e "\n"
-        echo "-----------------------------硬盘信息---------------------------------------------"
-        echo -e  "硬盘数量：$(ls /dev/sd* | grep -v [1-9] | wc -l) \n"
-        echo "硬盘详情："
+        echo "-----------------------------hard disk information------------------ ----------------------------"
+        echo -e "Number of hard drives: $(ls /dev/sd* | grep -v [1-9] | wc -l) \n"
+        echo "Hard disk details:"
         df -Th
         
     - name: Initialization environment
