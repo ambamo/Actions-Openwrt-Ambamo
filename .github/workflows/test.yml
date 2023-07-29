@@ -7,7 +7,7 @@
 #   ECM patches from Bitthief
 ################################################
 
-name: Build AX3600 with ECM
+name: Build test
 
 on:
   repository_dispatch:
@@ -74,7 +74,6 @@ jobs:
         removeArtifacts: false
         artifacts: ${{ env.FIRMWARE }}/*
         allowUpdates: true
-        token: ${{ secrets.GH_TOKEN }}
         body: |
             AX3600 ECM             
             Default IP: 192.168.0.1
