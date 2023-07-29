@@ -562,3 +562,5 @@ CONFIG_PACKAGE_luci-app-smartdns=y
 # CONFIG_PACKAGE_luci-app-mosdns is not set
 
 CONFIG_PACKAGE_tcpdump=y
+CONFIG_PACKAGE_banip=y
+CONFIG_PACKAGE_luci-app-banip=y
