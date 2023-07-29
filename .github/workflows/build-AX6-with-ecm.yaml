@@ -1,5 +1,5 @@
 ################################################
-# Description: Build OpenWrt for Redmi AX 6using GitHub Actions
+# Description: Build OpenWrt for AX3600 using GitHub Actions
 # Uses:
 #   imoutowrt/immortalwrt from CNSZTL
 #   IPQ807x patchs from Robimarko & Ansuels
