@@ -166,6 +166,8 @@ jobs:
       id: release
       uses: ncipollo/release-action@main
       if: env.ORGANIZE_STATUS == 'success' && env.UPLOAD_RELEASE == 'true' && (!cancelled())
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
         tag: v${{ env.FILE_DATE }}-ax6.ECM
         removeArtifacts: false
