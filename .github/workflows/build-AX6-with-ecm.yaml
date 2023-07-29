@@ -32,7 +32,7 @@ env:
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
-  TZ: Asia/Shanghai
+  TZ: Europe/Paris
   
 jobs:
   build:
@@ -103,7 +103,7 @@ jobs:
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         # Modify the version number
-        echo CONFIG_VERSION_CODE="$(TZ=UTC-8 date "+%Y.%m.%d")" >> openwrt/.config
+        echo CONFIG_VERSION_CODE="$(TZ=UTC-1 date "+%Y.%m.%d")" >> openwrt/.config
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
@@ -174,7 +174,7 @@ jobs:
         body: |
             Redmi AX6 固件精简版, 带 ECM 加速
             
-            Default IP: 192.168.199.1
+            Default IP: 192.168.0.1
             Default username: root
             Default password: password
             
