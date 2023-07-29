@@ -20,6 +20,9 @@ on:
   schedule:
     - cron: '30 18 * * 5'
 
+permissions:
+  contents: write
+  
 env:
   # REPO_URL: https://github.com/AgustinLorenzo/openwrt
   # REPO_BRANCH: main
