@@ -1,1 +1,85 @@
 
+################################################
+# Description: Build OpenWrt for AX3600 using GitHub Actions
+# Uses:
+#   imoutowrt/immortalwrt from CNSZTL
+#   IPQ807x patchs from Robimarko & Ansuels
+#   ECM patches from Bitthief
+################################################
+
+name: Build AX3600 with ECM
+
+on:
+  repository_dispatch:
+    types: [Source_Code_Update_bitthief, Package_Luci_Update]  
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'
+  schedule:
+    - cron: '30 18 * * 5'
+
+env:
+  # REPO_URL: https://github.com/AgustinLorenzo/openwrt
+  # REPO_BRANCH: main
+  REPO_URL: https://github.com/bitthief/openwrt
+  REPO_BRANCH: qualcommax-6.1-nss
+  FEEDS_CONF: AX6.with.ECM/feeds.conf.ecm
+  CONFIG_FILE: AX6.with.ECM/.config.bad
+  DIY_P1_SH: AX6.with.ECM/diy-part1.sh
+  DIY_P2_SH: AX6.with.ECM/diy-part2.sh
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: true
+  UPLOAD_RELEASE: true
+  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  TZ: Europe/Paris
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Check server configuration
+      run: |
+        echo "Warning"
+        echo "If the performance of the allocated server is insufficient, be sure to cancel it in time and run it again!"
+        echo "CPU models known to be successfully compiled: 8370C, 8171M"
+        echo "CPU model known to be underperforming: 8272CL"
+        echo -e "------------- ------------CPU information ------------------ ------------------------\n"
+        echo "CPU physical quantity: $(cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l)"
+        echo -e "CPU core and version information: $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
+        echo "------------------------------- memory information --------------- ----------------------------"
+        echo "Installed memory details:"
+        sudo lshw -short -C memory | grep GiB
+        echo -e "\n"
+        echo "-----------------------------hard disk information------------------ ----------------------------"
+        echo -e "Number of hard drives: $(ls /dev/sd* | grep -v [1-9] | wc -l) \n"
+        echo "Hard disk details:"
+        df -Th
+        
+
+
+    - name: Upload OpenWrt Firmware to Release
+      id: release
+      uses: ncipollo/release-action@main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        tag: v${{ env.FILE_DATE }}-ax6.ECM
+        removeArtifacts: false
+        artifacts: ${{ env.FIRMWARE }}/*
+        allowUpdates: true
+        token: ${{ secrets.GH_TOKEN }}
+        body: |
+            AX3600 ECM             
+            Default IP: 192.168.0.1
+            Default username: root
+            Default password: password
+            
+
+    
